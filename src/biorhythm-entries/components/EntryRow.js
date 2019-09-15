@@ -5,7 +5,7 @@ import moment from 'moment';
 import Button from '../../ui-elements/Button';
 import arrowRight from '../../assets/icons/arrow-right.png';
 
-const ParticipantRow = ({item, history}) => (
+const EntryRow = ({item, history}) => (
     <div className="flex flex-row w-full justify-between items-center py-2 border-b-2">
         <div className="flex flex-row">
             <div className="font-bold w-20 mr-2 md:w-32 md:mr-5">{item.name}</div>
@@ -13,7 +13,7 @@ const ParticipantRow = ({item, history}) => (
         </div>
         <Button 
             className="flex self-end"
-            onClick={() => history.push(`/details/${item.name}_${item.id}`)}
+            onClick={() => history.push(`/graph/${item.name}_${item.id}`)}
         >
             <span>Show</span>
             <img src={arrowRight} alt="show" width="16" height="16" />
@@ -21,14 +21,14 @@ const ParticipantRow = ({item, history}) => (
     </div>
 );
 
-ParticipantRow.propTypes = {
+EntryRow.propTypes = {
     item: PropTypes.object,
     history: PropTypes.object,
 };
 
-ParticipantRow.defaultProps = {
+EntryRow.defaultProps = {
     item: null,
     history: null,
 }
 
-export default withRouter(ParticipantRow);
+export default withRouter(EntryRow);
