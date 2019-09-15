@@ -9,7 +9,14 @@ const Footer = props => (
             developed by Wilhelm Fliess in the late 19th century, and was popularized in the United States in late 1970s. 
             Most scientists believe that the idea has no more predictive power than chance.
         </div>
-        <a className="font-bold" href="https://en.wikipedia.org/wiki/Biorhythm" target="_blank">https://en.wikipedia.org/wiki/Biorhythm</a>
+        <a 
+            className="font-bold" 
+            href="https://en.wikipedia.org/wiki/Biorhythm" 
+            rel="noopener noreferrer"
+            target="_blank" 
+        >
+            https://en.wikipedia.org/wiki/Biorhythm
+        </a>
     </div>
 );
 

@@ -28,7 +28,6 @@ const BiorhythmView = props => {
     useEffect(() => {
         const cookie = JSON.stringify(list);
         cookies.set('list', cookie);
-        console.log(list)
     }, [list])
 
     const formRef = useRef();
