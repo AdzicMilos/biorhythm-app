@@ -1,8 +1,8 @@
 import React from 'react';
 
 const Footer = props => (
-    <div className="">
-        <div className="mt-10 w-64 border-t-2 border-solid border-gray-500 h-2" />
+    <div className="flex-shrink-0">
+        <div className="mt-10 w-64 border-t-2 border-solid border-black-600 h-2" />
         <div className="py-2">
             A biorhythm (from Greek βίος - bios, "life"[1] and ῥυθμός - rhuthmos, "any regular recurring motion, rhythm"[2]) 
             is an attempt to predict various aspects of a person's life through simple mathematical cycles. The theory was 

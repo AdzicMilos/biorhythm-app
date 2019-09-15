@@ -46,7 +46,7 @@ const BiorhythmView = props => {
     }
 
     return (
-        <div>
+        <div className="flex flex-col h-full">
             <Title>
                 Biorhythm
             </Title>
