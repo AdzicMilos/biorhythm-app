@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 const GraphLegend = ({legends}) => (
     <div 
-        className="flex flex-row justify-between items-center py-3 self-end" 
-        style={{minWidth: '300px'}}
+        className="flex flex-col md:flex-row md:justify-between md:items-center py-3 self-end" 
+        style={{minWidth: '100px'}}
     >
         {legends.map(({name, color}, index, arr) => (
             <div key={name} className={`flex flex-row ${index === arr.length - 1 ? '' : 'pr-2 md:pr-3'}`}>

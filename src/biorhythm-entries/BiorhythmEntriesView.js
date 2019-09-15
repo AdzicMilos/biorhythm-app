@@ -4,14 +4,14 @@ import Cookies from 'universal-cookie';
 import Title from '../ui-elements/Title';
 import Button from '../ui-elements/Button';
 import Input from '../ui-elements/Input';
-import ParticipantList from './components/ParticipantList';
-import ParticipantRow from './components/ParticipantRow';
+import EntryList from './components/EntryList';
+import EntryRow from './components/EntryRow';
 import Footer from './components/Footer';
 import arrowRight from '../assets/icons/arrow-right.png';
 
 const cookies = new Cookies();
 
-const BiorhythmView = props => {
+const BiorhythmEntriesView = props => {
     const [name, setName] = useState('');
     const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
     const [list, setList] = useState([]);
@@ -81,14 +81,14 @@ const BiorhythmView = props => {
                     <img src={arrowRight} alt="show" width="16" height="16" />
                 </Button>
             </form>
-            <ParticipantList>
+            <EntryList>
                 {list.map((item, index) => (
-                    <ParticipantRow key={index} item={item} />
+                    <EntryRow key={index} item={item} />
                 ))}
-            </ParticipantList>
+            </EntryList>
             <Footer/>
         </div>
     );
 };
 
-export default BiorhythmView;
+export default BiorhythmEntriesView;

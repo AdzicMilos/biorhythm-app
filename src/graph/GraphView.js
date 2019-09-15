@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import moment from 'moment';
 import Cookies from 'universal-cookie';
@@ -14,7 +15,7 @@ import arrowLeft from '../assets/icons/arrow-left.png';
 
 const cookies = new Cookies();
 
-const GraphView = props => {
+const GraphView = ({match}) => {
     const tableColumnNumber = 28;
     const tableRowNumber = 2;
     const weekDays = ['Monday', 'Tuesday', 'Wendseday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -22,7 +23,8 @@ const GraphView = props => {
     const curveBottomPosition = 5;
     const curveMiddlePosition = (curveTopPosition + curveBottomPosition) / 2;
     const users = cookies.get('list');
-    const user = users.find(user => `${user.name}_${user.id}` === props.match.params.detailsId);
+    const {params = {}} = match;
+    const user = users.find(({name, id}) => `${name}_${id}` === params.graphId);
     const {name, date} = user || {};
     const physical = {
         color: '#e53e3e', 
@@ -224,6 +226,14 @@ const GraphView = props => {
             </div>
         </div>
     );
+};
+
+GraphView.propTypes = {
+    match: PropTypes.object,
+};
+
+GraphView.defaultProps = {
+    match: {},
 };
 
 export default GraphView;
