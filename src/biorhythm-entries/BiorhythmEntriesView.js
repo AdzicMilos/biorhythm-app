@@ -27,11 +27,6 @@ const BiorhythmEntriesView = ({history}) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => {
-        const cookie = JSON.stringify(list);
-        cookies.set('list', cookie);
-    }, [list])
-
     const formRef = useRef();
 
     const handleClick = () => {
@@ -41,11 +36,14 @@ const BiorhythmEntriesView = ({history}) => {
         const isUnique = list.every(item => item.name !== name || !(moment(date).isSame(item.date)));
         if (isUnique) {
             const id = uniqueId();
-            setList([{name, date, id}, ...list.slice(0, 9)]);
+            const updatedList = [{name, date, id}, ...list.slice(0, 9)]
+            const cookie = JSON.stringify(updatedList);
+            cookies.set('list', cookie);
+            setList(updatedList);
             // clear inputs
             setName('');
             setDate(moment().format('YYYY-MM-DD'));
-            // history.push({pathname:`graph/${name}_${id}`, state: {name, date, id}});
+            history.push({pathname:`graph/${name}_${id}`, state: {name, date, id}});
         }
     }
 
