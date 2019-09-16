@@ -1,4 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
+import PropTypes from 'prop-types';
+import {withRouter} from 'react-router-dom';
 import moment from 'moment';
 import Cookies from 'universal-cookie';
 import Title from '../ui-elements/Title';
@@ -11,7 +13,7 @@ import arrowRight from '../assets/icons/arrow-right.png';
 
 const cookies = new Cookies();
 
-const BiorhythmEntriesView = props => {
+const BiorhythmEntriesView = ({history}) => {
     const [name, setName] = useState('');
     const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
     const [list, setList] = useState([]);
@@ -38,10 +40,12 @@ const BiorhythmEntriesView = props => {
         }
         const isUnique = list.every(item => item.name !== name || !(moment(date).isSame(item.date)));
         if (isUnique) {
-            setList([{name, date, id: uniqueId()}, ...list.slice(0, 9)]);
+            const id = uniqueId();
+            setList([{name, date, id}, ...list.slice(0, 9)]);
             // clear inputs
             setName('');
             setDate(moment().format('YYYY-MM-DD'));
+            // history.push({pathname:`graph/${name}_${id}`, state: {name, date, id}});
         }
     }
 
@@ -91,4 +95,12 @@ const BiorhythmEntriesView = props => {
     );
 };
 
-export default BiorhythmEntriesView;
+BiorhythmEntriesView.propTypes = {
+    history: PropTypes.object,
+};
+
+BiorhythmEntriesView.defaultProps = {
+    history: {},
+};
+
+export default withRouter(BiorhythmEntriesView);

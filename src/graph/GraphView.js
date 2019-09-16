@@ -12,59 +12,40 @@ import Curve from './components/Curve';
 import GraphLegend from './components/GraphLegend';
 import BiorhythmResult from './components/BiorhythmResult';
 import arrowLeft from '../assets/icons/arrow-left.png';
+import {
+    TABLE_COLUMN_NUMBER,
+    TABLE_ROW_NUMBER,
+    CURVE_TOP_POSITION,
+    CURVE_BOTTOM_POSITION,
+    CURVE_MIDDLE_POSITION,
+    PHYSICAL, 
+    EMOTIONAL, 
+    INTELLECTUAL, 
+    INTUITIVE,
+    getTotalCycleNumber,
+} from './components/cycleConstants';
 
 const cookies = new Cookies();
 
-const GraphView = ({match}) => {
-    const tableColumnNumber = 28;
-    const tableRowNumber = 2;
-    const weekDays = ['Monday', 'Tuesday', 'Wendseday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    const curveTopPosition = 55;
-    const curveBottomPosition = 5;
-    const curveMiddlePosition = (curveTopPosition + curveBottomPosition) / 2;
-    const users = cookies.get('list');
+const GraphView = ({match, location}) => {
+    const users = cookies.get('list') || [];
     const {params = {}} = match;
-    const user = users.find(({name, id}) => `${name}_${id}` === params.graphId);
+    const user = users.find(({name, id}) => `${name}_${id}` === params.graphId) || location.state;
     const {name, date} = user || {};
-    const physical = {
-        color: '#e53e3e', 
-        duration: 23 * 10,
-        name: 'Physical',
-    };
-    const emotional = {
-        color: '#48bb78', 
-        duration: 28 * 10,
-        name: 'Emotional',
-    };
-    const intuitive = {
-        color: '#ecc94b', 
-        duration: 38 * 10,
-        name: 'Intuitive',
-    };
-    const intellectual = {
-        color: '#63b3ed', 
-        duration: 33 * 10,
-        name: 'Intellectual',
-    };
-
+    const weekDays = ['Monday', 'Tuesday', 'Wendseday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     const currentDay = moment().startOf('day');
     const dateBirth = moment(date, 'YYYY-MM-DD');
     const dayOfBirth = weekDays[dateBirth.isoWeekday() - 1];
     const dayOfLife = currentDay.diff(dateBirth, 'days');
-
-    const svgWidth = ((dayOfLife + tableColumnNumber - 8) / tableColumnNumber) * 280;  
-    const getTotalCycleNumber = (totalDays, amplitude) => {
-        return totalDays / amplitude;
-    };
-
+    const svgWidth = (dayOfLife + TABLE_COLUMN_NUMBER - 8) * 10;  
     const getPoints = (startPosition, amplitude, isOdd) => {
         let result = [];
         let currentPosition = startPosition;
         let isOddType = isOdd; 
-        while (currentPosition <= (tableColumnNumber * 10 + 280)) {
-            let height = isOddType ? curveTopPosition : curveBottomPosition;
+        while (currentPosition <= (TABLE_COLUMN_NUMBER * 10 + 280)) {
+            let height = isOddType ? CURVE_TOP_POSITION : CURVE_BOTTOM_POSITION;
             if (result.length === 0 && startPosition >= 0) {
-                height = curveMiddlePosition;
+                height = CURVE_MIDDLE_POSITION;
             } 
             result.push([currentPosition, height]);
             currentPosition = currentPosition + amplitude;
@@ -76,9 +57,9 @@ const GraphView = ({match}) => {
     const getStartPosition = (fullSvgWidth, visibleSvgWidth, cycleNumber, duration) => {
         if (fullSvgWidth > visibleSvgWidth) {
             if ((fullSvgWidth - visibleSvgWidth) > duration) {
-                const unRenderedCycles = Math.floor(cycleNumber) - Math.ceil((visibleSvgWidth / duration)) * 2;
+                const unRenderedCycles = Math.floor(cycleNumber) - (Math.ceil(visibleSvgWidth / duration) * 2);
                 const startPositionOfUnrederedCycles = -(fullSvgWidth - visibleSvgWidth);
-                return startPositionOfUnrederedCycles + (((unRenderedCycles - 1) * duration) + (duration / 4));
+                return startPositionOfUnrederedCycles + (((unRenderedCycles - 1) * duration) + (duration * 3 / 4));
             }
             return -(fullSvgWidth - visibleSvgWidth);
         } 
@@ -87,8 +68,8 @@ const GraphView = ({match}) => {
 
     const getInitialValueOdHeight = (fullSvgWidth, visibleSvgWidth, cycleNumber, duration) => {
         if (fullSvgWidth > visibleSvgWidth && ((fullSvgWidth - visibleSvgWidth) > duration)) {
-            const unRenderedCycles = Math.floor(cycleNumber) - Math.ceil((visibleSvgWidth / duration)) * 2;
-            return unRenderedCycles % 2 === 0;
+            const unRenderedCycles = Math.floor(cycleNumber) - (Math.ceil(visibleSvgWidth / duration) * 2);
+            return (unRenderedCycles * 2) % 2 === 0;
         } 
         return true;
     };
@@ -96,64 +77,64 @@ const GraphView = ({match}) => {
     const emotionalPoints = getPoints(
         getStartPosition(
             svgWidth, 
-            tableColumnNumber * 10, 
-            getTotalCycleNumber(dayOfLife + tableColumnNumber - 8, 28),
-            emotional.duration,
+            TABLE_COLUMN_NUMBER * 10, 
+            getTotalCycleNumber(dayOfLife + TABLE_COLUMN_NUMBER - 8, 28),
+            EMOTIONAL.duration,
         ),
-        emotional.duration / 2, 
+        EMOTIONAL.duration / 2, 
         getInitialValueOdHeight(
             svgWidth, 
-            tableColumnNumber * 10, 
-            getTotalCycleNumber(dayOfLife + tableColumnNumber - 8, 28),
-            emotional.duration,
+            TABLE_COLUMN_NUMBER * 10, 
+            getTotalCycleNumber(dayOfLife + TABLE_COLUMN_NUMBER - 8, 28),
+            EMOTIONAL.duration,
         ),
     );
 
     const physicalPoints = getPoints(
         getStartPosition(
             svgWidth, 
-            tableColumnNumber * 10, 
-            getTotalCycleNumber(dayOfLife + tableColumnNumber - 8, 23),
-            physical.duration,
+            TABLE_COLUMN_NUMBER * 10, 
+            getTotalCycleNumber(dayOfLife + TABLE_COLUMN_NUMBER - 8, 23),
+            PHYSICAL.duration,
         ),
-        physical.duration / 2, 
+        PHYSICAL.duration / 2, 
         getInitialValueOdHeight(
             svgWidth, 
-            tableColumnNumber * 10, 
-            getTotalCycleNumber(dayOfLife + tableColumnNumber - 8, 23),
-            physical.duration,
+            TABLE_COLUMN_NUMBER * 10, 
+            getTotalCycleNumber(dayOfLife + TABLE_COLUMN_NUMBER - 8, 23),
+            PHYSICAL.duration,
         ),
     );
 
     const intellectualPoints = getPoints(
         getStartPosition(
             svgWidth, 
-            tableColumnNumber * 10, 
-            getTotalCycleNumber(dayOfLife + tableColumnNumber - 8, 33),
-            intellectual.duration,
+            TABLE_COLUMN_NUMBER * 10, 
+            getTotalCycleNumber(dayOfLife + TABLE_COLUMN_NUMBER - 8, 33),
+            INTELLECTUAL.duration,
         ),
-        intellectual.duration / 2, 
+        INTELLECTUAL.duration / 2, 
         getInitialValueOdHeight(
             svgWidth, 
-            tableColumnNumber * 10, 
-            getTotalCycleNumber(dayOfLife + tableColumnNumber - 8, 33),
-            intellectual.duration,
+            TABLE_COLUMN_NUMBER * 10, 
+            getTotalCycleNumber(dayOfLife + TABLE_COLUMN_NUMBER - 8, 33),
+            INTELLECTUAL.duration,
         ),
     );
 
     const intuitivePoints = getPoints(
         getStartPosition(
             svgWidth, 
-            tableColumnNumber * 10, 
-            getTotalCycleNumber(dayOfLife + tableColumnNumber - 8, 38),
-            intuitive.duration,
+            TABLE_COLUMN_NUMBER * 10, 
+            getTotalCycleNumber(dayOfLife + TABLE_COLUMN_NUMBER - 8, 38),
+            INTUITIVE.duration,
         ),
-        intuitive.duration / 2, 
+        INTUITIVE.duration / 2, 
         getInitialValueOdHeight(
             svgWidth, 
-            tableColumnNumber * 10, 
-            getTotalCycleNumber(dayOfLife + tableColumnNumber - 8, 38),
-            intuitive.duration,
+            TABLE_COLUMN_NUMBER * 10, 
+            getTotalCycleNumber(dayOfLife + TABLE_COLUMN_NUMBER - 8, 38),
+            INTUITIVE.duration,
         ),
     );
 
@@ -175,50 +156,37 @@ const GraphView = ({match}) => {
                         </div>
                     </div>
                 </Title>
-                <Graph tableColumnNumber={tableColumnNumber}>
-                    <GraphGrid 
-                        tableRowNumber={tableRowNumber}
-                    />
-                    <GraphText
-                        tableRowNumber={tableRowNumber}
-                    />
+                <Graph 
+                    tableColumnNumber={TABLE_COLUMN_NUMBER}
+                    tableRowNumber={TABLE_ROW_NUMBER}
+                >
+                    <GraphGrid />
+                    <GraphText />
                     <GraphColumnSelected />
                     <Curve
-                        curveColor={physical.color}
+                        curveColor={PHYSICAL.color}
                         points={physicalPoints}
                     />
                     <Curve
-                        curveColor={emotional.color}  
+                        curveColor={EMOTIONAL.color}  
                         points={emotionalPoints}
                     />
                     <Curve
-                        curveColor={intellectual.color} 
+                        curveColor={INTELLECTUAL.color} 
                         points={intellectualPoints}
                     />
                     <Curve
-                        curveColor={intuitive.color}  
+                        curveColor={INTUITIVE.color}  
                         points={intuitivePoints}
                     />
                 </Graph>
                 <GraphLegend 
-                    legends={[physical, emotional, intellectual, intuitive]}
+                    legends={[PHYSICAL, EMOTIONAL, INTELLECTUAL, INTUITIVE]}
                 />
-                {/*
-                <svg viewBox="0 0 560 14">
-                    <rect x="400" width="8" height="8" fill="red" y="6" />
-                    <text x="410" y="13" fontSize="6" fill="gray">Physical</text>
-                    <rect x="440" width="8" height="8" fill="green" y="6" />
-                    <text x="450" y="13" fontSize="6" fill="gray">Intelectual</text>
-                    <rect x="485" width="8" height="8" fill="yellow" y="6" />
-                    <text x="495" y="13" fontSize="6" fill="gray">Intuitive</text>
-                    <rect x="522" width="8" height="8" fill="blue" y="6" />
-                    <text x="532" y="13" fontSize="6" fill="gray">Emotional</text>
-                </svg>
-                */}
             </div>
             <BiorhythmResult 
                 dayOfLife={dayOfLife}
-                biorhythmCircles={[physical, emotional, intellectual, intuitive]} 
+                biorhythmCircles={[PHYSICAL, EMOTIONAL, INTELLECTUAL, INTUITIVE]} 
             />
             <div className="flex flex-col text-xl my-4 px-2">
                 <p>Day of birth: <span className="font-bold">{dayOfBirth}</span></p>
