@@ -21,4 +21,4 @@ App is using tailwindcss `tailwindcss.com`
 ###### Technology
 UI library: App is written in React.js.
 Routing: react router 5.
-Component: components are functional with react hooks feature is local state is necessary insise app.
+Component: components are functional with react hooks feature.
