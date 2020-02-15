@@ -1,0 +1,15 @@
+export const ENTRIES_PAGE_TITLE = 'Biorhythm';
+export const ENTRY_LIST_TITLE = 'Last 10 Entries';
+export const FOOTER_TITLE = 'A biorhythm (from Greek βίος - bios, life[1] and ῥυθμός - rhuthmos, any regular recurring motion, rhythm[2]) is an attempt to predict various aspects of a life of person through simple mathematical cycles. The theory was developed by Wilhelm Fliess in the late 19th century, and was popularized in the United States in late 1970s. Most scientists believe that the idea has no more predictive power than chance.';
+export const FOOTER_LINK = 'https://en.wikipedia.org/wiki/Biorhythm';
+export const GRAPH_PAGE_TITLE = 'Biorhythm graph';
+export const NOT_FOUND_PAGE_TITLE = 'Not Found';
+export const SHOW_BUTTON = 'Show';
+export const BACK_BUTTON = 'Back'
+export const INPUT_NAME_LABEL = 'Name';
+export const INPUT_NAME_PLACEHOLDER = 'Add name';
+export const INPUT_DATE_LABEL = 'Birthday';
+export const WEEK_DAYS = ['Monday', 'Tuesday', 'Wendseday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+export const STORAGE_ITEM_NAME = 'list';
+export const PERSON_DAY_OF_LIFE = 'Day of life';
+export const PERSON_DAY_OF_BIRTH = 'Day of birth';

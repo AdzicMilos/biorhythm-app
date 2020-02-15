@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './Input.scss';
 
 const Input = ({type, label, value, handleInputChange, minLength, placeholder, required}) => {
     const handleChange = e => {

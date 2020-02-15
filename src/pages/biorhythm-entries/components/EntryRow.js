@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {withRouter} from 'react-router-dom';
 import moment from 'moment';
-import Button from '../../ui-elements/Button';
-import arrowRight from '../../assets/icons/arrow-right.png';
+import Button from '../../../ui-elements/Button';
+import arrowRight from '../../../assets/icons/arrow-right.png';
+import {SHOW_BUTTON} from '../../constants';
 
 const EntryRow = ({item, history}) => (
     <div className="flex flex-row w-full justify-between items-center py-2 border-b-2">
@@ -15,7 +16,7 @@ const EntryRow = ({item, history}) => (
             className="flex self-end"
             onClick={() => history.push(`/graph/${item.name}_${item.id}`)}
         >
-            <span>Show</span>
+            <span>{SHOW_BUTTON}</span>
             <img src={arrowRight} alt="show" width="16" height="16" />
         </Button>
     </div>

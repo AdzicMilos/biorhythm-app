@@ -1,8 +1,8 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import BiorhythmEntriesView from './biorhythm-entries/BiorhythmEntriesView';
-import GraphView from './graph/GraphView';
-import NotFound from './NotFound';
+import BiorhythmEntriesView from './pages/biorhythm-entries/BiorhythmEntriesView';
+import GraphView from './pages/graph/GraphView';
+import NotFound from './pages/static-pages/NotFound';
 
 function App() {
   return (

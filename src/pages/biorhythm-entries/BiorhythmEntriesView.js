@@ -1,36 +1,28 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {withRouter} from 'react-router-dom';
 import moment from 'moment';
-import Cookies from 'universal-cookie';
-import Title from '../ui-elements/Title';
-import Button from '../ui-elements/Button';
-import Input from '../ui-elements/Input';
+import Title from '../../ui-elements/Title';
+import Button from '../../ui-elements/Button';
+import Input from '../../ui-elements/Input';
 import EntryList from './components/EntryList';
 import EntryRow from './components/EntryRow';
 import Footer from './components/Footer';
-import arrowRight from '../assets/icons/arrow-right.png';
-
-const cookies = new Cookies();
+import arrowRight from '../../assets/icons/arrow-right.png';
+import {useLocalStorage} from '../../util/hooks';
+import {
+    ENTRIES_PAGE_TITLE,
+    SHOW_BUTTON,
+    INPUT_NAME_PLACEHOLDER,
+    INPUT_NAME_LABEL,
+    INPUT_DATE_LABEL,
+} from '../constants';
 
 const BiorhythmEntriesView = ({history}) => {
     const [name, setName] = useState('');
     const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
-    const [list, setList] = useState([]);
     const uniqueId = () => `id-${Math.random().toString(36).substr(2, 16)}`;
-
-    useEffect(() => {
-        const cookie = cookies.get('list');
-        if (cookie) {
-           setList(cookie);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-        const cookie = JSON.stringify(list);
-        cookies.set('list', cookie);
-    }, [list])
+    const [list, setList] = useLocalStorage('list', []);
 
     const formRef = useRef();
 
@@ -52,7 +44,7 @@ const BiorhythmEntriesView = ({history}) => {
     return (
         <div className="flex flex-col h-full">
             <Title>
-                Biorhythm
+                {ENTRIES_PAGE_TITLE}
             </Title>
             <form 
                 ref={formRef} 
@@ -61,17 +53,17 @@ const BiorhythmEntriesView = ({history}) => {
             >
                 <div className="flex w-full flex-col md:flex-row md:w-6/12" >
                     <Input
-                        label="Name"
+                        label={INPUT_NAME_LABEL}
                         value={name}
                         className=""
                         handleInputChange={setName}
                         minLength={4}
                         required={true}
-                        placeholder='Add name'
+                        placeholder={INPUT_NAME_PLACEHOLDER}
                     />
                     <Input
                         type="date"
-                        label="Birthday"
+                        label={INPUT_DATE_LABEL}
                         value={date}
                         className=""
                         handleInputChange={setDate}
@@ -81,7 +73,7 @@ const BiorhythmEntriesView = ({history}) => {
                     className="flex self-start justify-between mt-4 md:self-end md:mt-0"
                     onClick={handleClick}
                 >
-                    <span>Show</span>
+                    <span>{SHOW_BUTTON}</span>
                     <img src={arrowRight} alt="show" width="16" height="16" />
                 </Button>
             </form>

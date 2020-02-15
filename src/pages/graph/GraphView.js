@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import moment from 'moment';
-import Cookies from 'universal-cookie';
-import Title from '../ui-elements/Title';
+import Title from '../../ui-elements/Title';
 import Graph from './components/Graph';
 import GraphGrid from './components/GraphGrid';
 import GraphText from './components/GraphText';
@@ -11,7 +10,7 @@ import GraphColumnSelected from './components/GraphColumnSelected';
 import Curve from './components/Curve';
 import GraphLegend from './components/GraphLegend';
 import BiorhythmResult from './components/BiorhythmResult';
-import arrowLeft from '../assets/icons/arrow-left.png';
+import arrowLeft from '../../assets/icons/arrow-left.png';
 import {
     TABLE_COLUMN_NUMBER,
     TABLE_ROW_NUMBER,
@@ -24,18 +23,24 @@ import {
     INTUITIVE,
     getTotalCycleNumber,
 } from './components/cycleConstants';
-
-const cookies = new Cookies();
+import {useLocalStorage} from '../../util/hooks';
+import {
+    GRAPH_PAGE_TITLE,
+    WEEK_DAYS,
+    STORAGE_ITEM_NAME,
+    PERSON_DAY_OF_LIFE,
+    PERSON_DAY_OF_BIRTH,
+    BACK_BUTTON,
+} from '../constants';
 
 const GraphView = ({match, location}) => {
-    const users = cookies.get('list') || [];
+    const [users] = useLocalStorage(STORAGE_ITEM_NAME, []);
     const {params = {}} = match;
     const user = users.find(({name, id}) => `${name}_${id}` === params.graphId) || location.state;
     const {name, date} = user || {};
-    const weekDays = ['Monday', 'Tuesday', 'Wendseday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     const currentDay = moment().startOf('day');
     const dateBirth = moment(date, 'YYYY-MM-DD');
-    const dayOfBirth = weekDays[dateBirth.isoWeekday() - 1];
+    const dayOfBirth = WEEK_DAYS[dateBirth.isoWeekday() - 1];
     const dayOfLife = currentDay.diff(dateBirth, 'days');
     const svgWidth = (dayOfLife + TABLE_COLUMN_NUMBER - 8) * 10;  
     const getPoints = (startPosition, amplitude, isOdd) => {
@@ -146,12 +151,12 @@ const GraphView = ({match, location}) => {
                         <div className="flex justify-between w-full text-base md:text-xl font-normal">
                             <Link to='/' className="flex flex-row justifyx-between items-center">
                                 <img src={arrowLeft} alt="back" width="16" height="16" />
-                                <span>Back</span>
+                                <span>{BACK_BUTTON}</span>
                             </Link>
                             <span>{moment(date).format('DD.MM.YYYY')}</span>
                         </div>
                         <div className="flex justify-between w-full">
-                            <span>Biorhythm graph</span>
+                            <span>{GRAPH_PAGE_TITLE}</span>
                             <span>{name}</span>
                         </div>
                     </div>
@@ -189,8 +194,8 @@ const GraphView = ({match, location}) => {
                 biorhythmCircles={[PHYSICAL, EMOTIONAL, INTELLECTUAL, INTUITIVE]} 
             />
             <div className="flex flex-col text-xl my-4 px-2">
-                <p>Day of birth: <span className="font-bold">{dayOfBirth}</span></p>
-                <p>Day of life: <span className="font-bold">{dayOfLife}</span></p>
+                <p>{PERSON_DAY_OF_BIRTH}: <span className="font-bold">{dayOfBirth}</span></p>
+                <p>{PERSON_DAY_OF_LIFE}: <span className="font-bold">{dayOfLife}</span></p>
             </div>
         </div>
     );
